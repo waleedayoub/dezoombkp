@@ -163,10 +163,10 @@ docker run -it \
   taxi_ingest:v001 \
     --user=root \
     --password=root \
-    --file_location="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2022-01.parquet" \
+    --file_location="https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2019-01.parquet" \
     --host_name=pgsql-dev \
     --port=5432 \
-    --table_name=yellowtaxidata \
+    --table_name=greentaxidata \
     --database_name=nytaxi
 ```
 ```shell
@@ -222,16 +222,21 @@ docker run -it taxi_ingest:v001 \
 
 ### Creating terraforms
 - There's a lot to go through here, but the basics are:
-- There is a main.tf and a variables.tf (other options files exist too)
-- In main.tf is where you specific your resource provider (e.g. google) and the resources you want to deploy (e.g. gcs bucket, bq data warehouse, etc.)
-- In variables.tf is where you can specific resource specific variables that you don't want to clutter the main.tf with
-  - This includes things like your project id, storage classes, regions, etc.
+  - There is a main.tf and a variables.tf (other options files exist too)
+  - In main.tf is where you specific your resource provider (e.g. google) and the resources you want to deploy (e.g. gcs bucket, bq data warehouse, etc.)
+  - In variables.tf is where you can specific resource specific variables that you don't want to clutter the main.tf with
+    - This includes things like your project id, storage classes, regions, etc.
 
-- Once you have your terraform files ready to go, you need to run:
-``` terraform init ```
-``` terraform apply ```
-``` terraform destroy ```
-- These do what they sound like
+  - Once you have your terraform files ready to go, you need to run:
+``` terraform
+terraform init
+terraform apply
+terraform destroy
+```
+  - These do what they sound like
 
 ## Running a parallel process in Azure
+
+## Airflow setup
+
 

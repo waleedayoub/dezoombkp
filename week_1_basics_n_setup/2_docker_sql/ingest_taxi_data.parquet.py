@@ -8,6 +8,8 @@ import argparse
 from time import time
 
 def main(params):
+
+    # map all the parameters you'll pass to the script    
     user = params.user
     password = params.password
     file_location = params.file_location
@@ -20,6 +22,8 @@ def main(params):
     t_start = time()
 
     # remember this is the file we're downloading for testing https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2022-01.parquet
+    # for the 2023 homework, we'll be using green taxi trips 2019-01:
+    #   https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2019-01.parquet
     os.system(f'wget {file_location} -O {parquet_file_name}')
     # create engine connection to the postgres database
     engine = create_engine(f'postgresql://{user}:{password}@{host_name}:{port}/{database_name}')
@@ -30,8 +34,8 @@ def main(params):
                         engine='pyarrow')
 
     # change type of dates
-    df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
-    df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
+    df.lpep_pickup_datetime = pd.to_datetime(df.lpep_pickup_datetime)
+    df.lpep_dropoff_datetime = pd.to_datetime(df.lpep_dropoff_datetime)
 
     # create the table with the headers
     """
