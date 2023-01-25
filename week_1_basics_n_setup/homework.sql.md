@@ -74,6 +74,16 @@ Remember that `lpep_pickup_datetime` and `lpep_dropoff_datetime` columns are in 
 - 17630
 - 21090
 
+### Response:
+```sql
+select count(*) from greentaxi
+where cast(lpep_pickup_datetime as date) = '2019-01-15'
+and cast(lpep_dropoff_datetime as date) = '2019-01-15';
+```
+```
+20530
+```
+
 ## Question 4. Largest trip for each day
 
 Which was the day with the largest trip distance
@@ -84,6 +94,19 @@ Use the pick up time for your calculations.
 - 2019-01-15
 - 2019-01-10
 
+### Response:
+```sql
+select cast(lpep_pickup_datetime as date) as pickupdate
+		,sum(trip_distance) as total_distance
+from greentaxi
+where cast(lpep_pickup_datetime as date) in ('2019-01-18','2019-01-28','2019-01-15','2019-01-10')
+group by 1
+order by 2 desc;
+```
+```
+2019-01-10 | 79530.82999999999
+```
+
 ## Question 5. The number of passengers
 
 In 2019-01-01 how many trips had 2 and 3 passengers?
@@ -93,6 +116,19 @@ In 2019-01-01 how many trips had 2 and 3 passengers?
 - 2: 1282 ; 3: 254
 - 2: 1282 ; 3: 274
 
+### Response:
+```sql
+select cast(lpep_pickup_datetime as date) as pickupdate
+		,passenger_count
+		,count(*)
+from greentaxi
+where cast(lpep_pickup_datetime as date) = '2019-01-01'
+group by 1,2
+order by 2 desc;
+```
+```
+2: 1282 ; 3: 254
+```
 
 ## Question 6. Largest tip
 
@@ -105,6 +141,21 @@ Note: it's not a typo, it's `tip` , not `trip`
 - Jamaica
 - South Ozone Park
 - Long Island City/Queens Plaza
+
+### Response:
+```sql
+select zpu."Zone" as pickup_zone
+	,zdo."Zone" as dropoff_zone
+	,sum(tip_amount) as total_tips
+from greentaxi t
+	,zone_lookup zpu
+	,zone_lookup zdo
+where t."PULocationID" = zpu."LocationID"
+and t."DOLocationID" = zdo."LocationID"
+and zpu."Zone" = 'Astoria'
+group by 1,2
+order by 3 desc;
+```
 
 
 ## Submitting the solutions
