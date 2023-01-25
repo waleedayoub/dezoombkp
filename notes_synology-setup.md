@@ -7,6 +7,17 @@
 
 ### step 0: get docker context working via ssh:
 https://skb.io/blog/2021/03/07/docker-contexts-synology/
+A few important changes to Synology since that guide was created:
+- RSAAuthentication as a parameter was deprecated from sshd_config
+- Synology switched from using synoservicectl to systemd commands, which means the line to restart services goes from:
+```shell
+sudo synoservicectl --restart <service_name>
+```
+to
+```shell
+sudo systemctl restart <service_name>
+```
+
 
 ### step 0b: make it easy to ssh into the machine by adding a config
 - In your home network, find .ssh directory, create a file called config, change its permissions to read and put something like the below in there
@@ -136,5 +147,5 @@ services:
       - pgdatabase
 ```
 
-And with that, I've got myself a nice little sandbox running on my synology through a docker context. It should come as no surprise that hardware utilization on my Synology is a fraction of what it is running a Linux VM on my macbook air:
+And with that, I've got myself a nice little sandbox running on my synology through a docker context. It should come as no surprise that hardware utilization on my Synology is a fraction of what it is running a Linux VM on my macbook air!
 
