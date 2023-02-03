@@ -10,6 +10,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 from prefect import flow, task
 from prefect.tasks import task_input_hash
+from prefect_sqlalchemy import SqlAlchemyConnector
 
 # extract task:
 @task(log_prints=True, retries=3, cache_key_fn=task_input_hash, cache_expiration=timedelta(days=1))
@@ -49,46 +50,26 @@ def transform_data(df):
     return df
 
 @task(log_prints=True, retries=3)
-def ingest_data(user, password, host_name, port, table_name, database_name, df):
+def ingest_data(table_name, df):
 
-    # map all the parameters you'll pass to the script
-    # since we're just running this python script without docker, we'll hard code the params
-    """
-    user = params.user
-    password = params.password
-    file_location = params.file_location
-    host_name = params.host_name
-    port = params.port
-    table_name = params.table_name
-    database_name = params.database_name
-    """
+    connection_block = SqlAlchemyConnector.load("postgres-connector")
 
-    # create engine connection to the postgres database
-    engine = create_engine(f'postgresql://{user}:{password}@{host_name}:{port}/{database_name}')
-    engine.connect()
-
-    # create headers for the table
-    df.head(n=0).to_sql(name=table_name, con=engine, if_exists='replace')
-    # load the data to postgres table
-    df.to_sql(name=table_name, con=engine, if_exists='append')
+    with connection_block.get_connection(begin=False) as engine:
+        # create headers for the table
+        df.head(n=0).to_sql(name=table_name, con=engine, if_exists='replace')
+        # load the data to postgres table
+        df.to_sql(name=table_name, con=engine, if_exists='append')
     
 
 @flow(name="ingest data")
 def main_flow():
-    user = "root"
-    password = "root"
     file_location = "https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-03.csv.gz"
-    host_name = "192.168.50.64"
-    port = "5433"
-    table_name = "greentaxi"
-    database_name = "nytaxi"
-
     # extract
     raw_data = extract_data(file_location)
     # transform
     transformed_data = transform_data(raw_data)
     # load
-    ingest_data(user, password, host_name, port, table_name, database_name, transformed_data)    
+    ingest_data(transformed_data)    
 
 
 if __name__ == '__main__':
@@ -115,4 +96,15 @@ if __name__ == '__main__':
 
     # call main with the args above
     main(args) 
+"""
+
+# connection info:
+"""
+user = "root"
+    password = "root"
+    file_location = "https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-03.csv.gz"
+    host_name = "192.168.50.64"
+    port = "5433"
+    table_name = "greentaxi"
+    database_name = "nytaxi"
 """
