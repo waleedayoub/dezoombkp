@@ -7,9 +7,11 @@ from sqlalchemy import create_engine
 import argparse
 from time import time
 
-def main(params):
+def ingest_data(user, password, file_location, host_name, port, table_name, database_name):
 
-    # map all the parameters you'll pass to the script    
+    # map all the parameters you'll pass to the script
+    # since we're just running this python script without docker, we'll hard code the params
+    """
     user = params.user
     password = params.password
     file_location = params.file_location
@@ -17,7 +19,7 @@ def main(params):
     port = params.port
     table_name = params.table_name
     database_name = params.database_name
-    
+    """
 
     # since backed up files from data talks are gzipped, need to make sure we include correct extension
     # this is for pandas to know what to do when you call read_csv
@@ -75,6 +77,21 @@ def main(params):
             break
 
 if __name__ == '__main__':
+    user = "root"
+    password = "root"
+    file_location = "https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-02.csv.gz"
+    host_name = "192.168.50.64"
+    port = "5433"
+    table_name = "greentaxi"
+    database_name = "nytaxi"
+
+    ingest_data(user, password, file_location, host_name, port, table_name, database_name)
+
+
+# original call from week 1 accepts params when the docker container is invoked
+# for this exercise, we'll just hard code the params above
+""" 
+if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='ingest csv data to postgres')
 
     # arguments we need to pass to the script:
@@ -89,4 +106,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # call main with the args above
-    main(args)
+    main(args) 
+"""
