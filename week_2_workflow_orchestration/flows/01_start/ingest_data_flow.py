@@ -59,21 +59,26 @@ def ingest_data(table_name, df):
         df.head(n=0).to_sql(name=table_name, con=engine, if_exists='replace')
         # load the data to postgres table
         df.to_sql(name=table_name, con=engine, if_exists='append')
-    
+
+@flow(name="table name log", log_prints=True)
+def log_subflow(table_name: str):
+    print(f"logging subflow for: {table_name}")
 
 @flow(name="ingest data")
-def main_flow():
+def main_flow(table_name: str):
     file_location = "https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-03.csv.gz"
+
+    log_subflow(table_name)
     # extract
     raw_data = extract_data(file_location)
     # transform
     transformed_data = transform_data(raw_data)
     # load
-    ingest_data(transformed_data)    
+    ingest_data(table_name, transformed_data)    
 
 
 if __name__ == '__main__':
-    main_flow()
+    main_flow(table_name = "greentaxi")
 
 
 

@@ -1,7 +1,7 @@
 
 ```toc
 ```
-## Week 1 scratch notes
+# Week 1 scratch notes
 
 ### useful links:
 On container lifecycles: https://www.tutorialworks.com/why-containers-stop/#what-if-my-docker-container-dies-immediately
@@ -237,6 +237,13 @@ terraform destroy
 
 ## Running a parallel process in Azure
 
-## Airflow setup
+# Week 2 notes
 
+- Switched to using prefect instead of airflow
+- prefect has primitives called tasks, flows, blocks, among others
+- these are used as decorators around python functions to create dependencies between the functions
+
+- flows contain tasks
+- blocks can be thought of as plugins or templates
+  - for example, you can use a sqlalchemy block to store credentials for a postgres connection and invoke it as an object?
 
