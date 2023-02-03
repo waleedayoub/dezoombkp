@@ -26,42 +26,53 @@ def main(params):
     else:
         csv_file_name = 'output.csv'
 
-    t_start = time()
-
     # remember this is the file we're downloading for testing https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2022-01.csv
     # for the 2023 homework, we'll be using green taxi trips 2019-01:
     #   https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2019-01.csv
     os.system(f'wget {file_location} -O {csv_file_name}')
+
     # create engine connection to the postgres database
     engine = create_engine(f'postgresql://{user}:{password}@{host_name}:{port}/{database_name}')
     engine.connect()
 
     # read the csv file for ingestion - specify arrow as engine for csv
-    df = pd.read_csv(csv_file_name,
-                        , compression='gzip'
-                        , iterator=True
-                        , chunksize=100000)
+    df_iter = pd.read_csv(csv_file_name
+                        ,compression='gzip'
+                        ,iterator=True
+                        ,chunksize=100000)
+    
+    df = next(df_iter)
 
     # change type of dates
     df.lpep_pickup_datetime = pd.to_datetime(df.lpep_pickup_datetime)
     df.lpep_dropoff_datetime = pd.to_datetime(df.lpep_dropoff_datetime)
-
-    # create the table with the headers
-    """
+    
+    # create headers for the table:
     df.head(n=0).to_sql(name=table_name,
             con=engine,
             if_exists='replace')
-    """
-    # write data to postgres
-    df.to_sql(name=table_name,
-            con=engine,
-            if_exists='append',
-            chunksize=10000)
     
-    t_end = time()
-    runtime = t_end-t_start
+    df.to_sql(name=table_name, con=engine, if_exists='append')
 
-    print("job took a total of %3f seconds to complete" % runtime)
+    while True:
+
+        try:
+            t_start = time()
+
+            df = next(df_iter)
+            # change type of dates
+            df.lpep_pickup_datetime = pd.to_datetime(df.lpep_pickup_datetime)
+            df.lpep_dropoff_datetime = pd.to_datetime(df.lpep_dropoff_datetime)
+
+            df.to_sql(name=table_name, con=engine, if_exists='append')
+
+            t_end = time()
+            runtime = t_end-t_start
+            print("job took a total of %3f seconds to complete" % runtime)
+
+        except:
+            print("Finished ingesting data into the postgres table")
+            break
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='ingest csv data to postgres')
