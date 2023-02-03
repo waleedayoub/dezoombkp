@@ -6,7 +6,6 @@ import pandas as pd
 from sqlalchemy import create_engine
 import argparse
 from time import time
-from prefect import flow
 
 def main(params):
 
@@ -18,21 +17,23 @@ def main(params):
     port = params.port
     table_name = params.table_name
     database_name = params.database_name
-    parquet_file_name = 'output.parquet'
+    csv_file_name = 'output.csv'
 
     t_start = time()
 
-    # remember this is the file we're downloading for testing https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2022-01.parquet
+    # remember this is the file we're downloading for testing https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2022-01.csv
     # for the 2023 homework, we'll be using green taxi trips 2019-01:
-    #   https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2019-01.parquet
-    os.system(f'wget {file_location} -O {parquet_file_name}')
+    #   https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2019-01.csv
+    os.system(f'wget {file_location} -O {csv_file_name}')
     # create engine connection to the postgres database
     engine = create_engine(f'postgresql://{user}:{password}@{host_name}:{port}/{database_name}')
     engine.connect()
 
-    # read the parquet file for ingestion - specify arrow as engine for parquet
-    df = pd.read_parquet(parquet_file_name,
-                        engine='pyarrow')
+    # read the csv file for ingestion - specify arrow as engine for csv
+    df = pd.read_csv(csv_file_name,
+                        , compression='gzip'
+                        , iterator=True
+                        , chunksize=100000)
 
     # change type of dates
     df.lpep_pickup_datetime = pd.to_datetime(df.lpep_pickup_datetime)
@@ -56,12 +57,12 @@ def main(params):
     print("job took a total of %3f seconds to complete" % runtime)
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='ingest parquet data to postgres')
+    parser = argparse.ArgumentParser(description='ingest csv data to postgres')
 
     # arguments we need to pass to the script:
     parser.add_argument('--user', help='user name for postgres')
     parser.add_argument('--password', help='password for postgres')
-    parser.add_argument('--file_location', help='location of the parquet file to ingest')
+    parser.add_argument('--file_location', help='location of the csv file to ingest')
     parser.add_argument('--host_name', help='name of the postgres host')
     parser.add_argument('--port', help='port of the postgres host')
     parser.add_argument('--table_name', help='name of the table to create or update')
