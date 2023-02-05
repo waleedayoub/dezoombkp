@@ -14,6 +14,9 @@ How many rows does that dataset have?
 * 299,234
 * 822,132
 
+```shell
+20:37:06.472 | INFO    | Task run 'transform-a7d916b4-0' - number of rows: 447770
+```
 
 ## Question 2. Scheduling with Cron
 
