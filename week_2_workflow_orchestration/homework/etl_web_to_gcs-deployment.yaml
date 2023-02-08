@@ -10,6 +10,12 @@ tags: []
 parameters: {}
 schedule: null
 infra_overrides: {}
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: GCS ETL flow
+manifest_path: null
 infrastructure:
   type: process
   env: {}
@@ -18,14 +24,11 @@ infrastructure:
   command: null
   stream_output: true
   working_dir: null
+  _block_document_id: f359df8e-50f9-4393-b44b-6ec417d556fe
+  _block_document_name: anonymous-717c1daa-8107-4526-9645-03b30bf0e5e6
+  _is_anonymous: true
   block_type_slug: process
   _block_type_slug: process
-
-###
-### DO NOT EDIT BELOW THIS LINE
-###
-flow_name: GCS ETL flow
-manifest_path: null
 storage:
   repository: https://github.com/waleedayoub/data-engineering-zoomcamp
   reference: null

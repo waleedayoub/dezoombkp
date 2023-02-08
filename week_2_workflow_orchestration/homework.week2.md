@@ -58,6 +58,7 @@ Make sure you have the parquet data files for Yellow taxi data for Feb. 2019 and
 - 27,235,753
 - 11,338,483
 
+### Response:
 ```shell
 20:12:28.765 | INFO    | Flow run 'aromatic-rhino' - there are 14851920 rows processed
 ```
@@ -75,10 +76,16 @@ How many rows were processed by the script?
 
 - 88,019
 - 192,297
-- 88,605
+- 88,605 <-
 - 190,225
 
-
+### Response:
+```shell
+prefect deployment build ./week_2_workflow_orchestration/flows/02_gcp/etl_web_to_gcs.py:etl_web_to_gcs \
+--name etl_github3 \
+-sb github/test \
+--apply
+```
 
 ## Question 5. Email notifications
 
