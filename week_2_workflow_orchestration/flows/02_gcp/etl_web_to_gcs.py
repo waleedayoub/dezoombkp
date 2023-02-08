@@ -54,8 +54,8 @@ def etl_web_to_gcs() -> None:
     # the url we need to break down is this one: https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-03.csv.gz
 
     taxi_colour = "green"
-    year = 2020
-    month = 11
+    year = 2019
+    month = 4
     file_name = f"{taxi_colour}_tripdata_{year}-{month:02}"
     file_location = f"https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{taxi_colour}/{file_name}.csv.gz"
 
