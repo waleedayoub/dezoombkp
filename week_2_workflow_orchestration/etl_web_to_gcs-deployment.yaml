@@ -1,9 +1,9 @@
 ###
 ### A complete description of a Prefect Deployment for flow 'GCS ETL flow'
 ###
-name: etl_github
+name: etl_github2
 description: The main ETL to GCS function
-version: 41bd77bb5391f317205376e87bcf9599
+version: fb6c1663b3050535ebe61c2be33115c5
 # The work queue that will handle this deployment's runs
 work_queue_name: default
 tags: []
