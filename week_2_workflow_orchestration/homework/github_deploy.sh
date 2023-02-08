@@ -1,0 +1,1 @@
+prefect deployment build -n etl_github -sb github/github-prefect-storage ./flows/02_gcp/etl_web_to_gcs.py:etl_web_to_gcs
