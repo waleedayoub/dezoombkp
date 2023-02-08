@@ -100,8 +100,15 @@ How many rows were processed by the script?
 - `125,268`
 - `377,922`
 - `728,390`
-- `514,392`
+- `514,392` <-
 
+### Response:
+```shell
+prefect deployment build ./week_2_workflow_orchestration/flows/02_gcp/etl_web_to_gcs.py:etl_web_to_gcs \
+--name etl_github \
+-sb github/test \
+--apply
+```
 
 ## Question 6. Secrets
 

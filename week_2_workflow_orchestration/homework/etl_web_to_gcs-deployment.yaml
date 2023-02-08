@@ -1,21 +1,15 @@
 ###
 ### A complete description of a Prefect Deployment for flow 'GCS ETL flow'
 ###
-name: etl_github3
+name: etl_github
 description: The main ETL to GCS function
-version: 41bd77bb5391f317205376e87bcf9599
+version: fb6c1663b3050535ebe61c2be33115c5
 # The work queue that will handle this deployment's runs
 work_queue_name: default
 tags: []
 parameters: {}
 schedule: null
 infra_overrides: {}
-
-###
-### DO NOT EDIT BELOW THIS LINE
-###
-flow_name: GCS ETL flow
-manifest_path: null
 infrastructure:
   type: process
   env: {}
@@ -24,16 +18,19 @@ infrastructure:
   command: null
   stream_output: true
   working_dir: null
-  _block_document_id: f359df8e-50f9-4393-b44b-6ec417d556fe
-  _block_document_name: anonymous-717c1daa-8107-4526-9645-03b30bf0e5e6
-  _is_anonymous: true
   block_type_slug: process
   _block_type_slug: process
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: GCS ETL flow
+manifest_path: null
 storage:
   repository: https://github.com/waleedayoub/data-engineering-zoomcamp
   reference: null
   access_token: null
-  _block_document_id: 111e3107-ca5f-4c56-b4b2-f4d709ffd6a1
+  _block_document_id: bf5d9418-2b2e-47de-ac25-c815ec7e1406
   _block_document_name: test
   _is_anonymous: false
   block_type_slug: github
