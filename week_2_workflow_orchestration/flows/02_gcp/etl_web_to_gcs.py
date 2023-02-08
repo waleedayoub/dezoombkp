@@ -55,7 +55,7 @@ def etl_web_to_gcs() -> None:
 
     taxi_colour = "green"
     year = 2020
-    month = 1
+    month = 11
     file_name = f"{taxi_colour}_tripdata_{year}-{month:02}"
     file_location = f"https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{taxi_colour}/{file_name}.csv.gz"
 
