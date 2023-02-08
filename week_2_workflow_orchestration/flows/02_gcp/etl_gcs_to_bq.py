@@ -65,11 +65,11 @@ def etl_gcs_to_bq():
     year = 2020
     month = 1
 
-    # extract
+    # extracts data from a GCS location and saves it locally, returns path to local file
     path = extract_from_gcs(taxi_colour, year, month)
-    # transform
+    # reads data from a local path, does some transforms and returns a pandas dataframe
     df = transform(path)
-    # load
+    # loads data from a pandas dataframe to a bigquery table
     load_to_bq(df)
 
 

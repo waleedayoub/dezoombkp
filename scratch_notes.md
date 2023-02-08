@@ -247,3 +247,23 @@ terraform destroy
 - blocks can be thought of as plugins or templates
   - for example, you can use a sqlalchemy block to store credentials for a postgres connection and invoke it as an object?
 
+- What is the relationship between flows, tasks, deployments and work queues?
+  - a deployment is a server-side concept that encapsulates a flow
+  - this allows the flow to be scheduled and triggered via an API
+  - it is the deployment that knows where your code is and the parameters required for the flow to run
+
+- The deployment can include metadata like tags
+  - tags can be used in notifications, for example
+  - to create a local deployment with code stored locally, you do this:
+```shell
+prefect deployment build <path_to_python.py>:<name_of_flow_entrypoint> -n "name of your flow"
+```
+- this creates a yaml file with a deployment configuration
+- to run that deployment, you do this:
+```shell
+prefect deployment apply <deployment.yaml>
+```
+- this creates a deployment ready to be run
+- to run it, you need to assign it to an agent and a work queue like this:
+``` shell
+prefect agent start --work-queue <"name of the work queue, usually this is set to default?">

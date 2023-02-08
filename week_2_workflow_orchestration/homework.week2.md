@@ -9,11 +9,12 @@ Using the `etl_web_to_gcs.py` flow that loads taxi data into GCS as a guide, cre
 
 How many rows does that dataset have?
 
-* 447,770
+* 447,770 <-
 * 766,792
 * 299,234
 * 822,132
 
+### Response:
 ```shell
 20:37:06.472 | INFO    | Task run 'transform-a7d916b4-0' - number of rows: 447770
 ```
@@ -24,11 +25,19 @@ Cron is a common scheduling specification for workflows.
 
 Using the flow in `etl_web_to_gcs.py`, create a deployment to run on the first of every month at 5pm UTC. What’s the cron schedule for that?
 
-- `0 5 1 * *`
+- `0 5 1 * *` <-
 - `0 0 5 1 *`
 - `5 * 1 0 *`
 - `* * 5 1 0`
 
+### Response:
+```shell
+1. 0 represents the minute field, and it specifies the task will run at the 0th minute (i.e., exactly on the hour)
+2. 5 represents the hour field, and it specifies the task will run at the 17th hour, which is 5 PM in UTC
+3. 1 represents the day of the month field, and it specifies the task will run on the 1st day of the month
+4. * in the month field specifies that the task will run every month
+5. * in the day of the week field specifies that the task will run every day of the week
+```
 
 ## Question 3. Loading data to BigQuery 
 
@@ -44,11 +53,14 @@ Create a deployment for this flow to run in a local subprocess with local flow c
 
 Make sure you have the parquet data files for Yellow taxi data for Feb. 2019 and March 2019 loaded in GCS. Run your deployment to append this data to your BiqQuery table. How many rows did your flow code process?
 
-- 14,851,920
+- 14,851,920 <-
 - 12,282,990
 - 27,235,753
 - 11,338,483
 
+```shell
+20:12:28.765 | INFO    | Flow run 'aromatic-rhino' - there are 14851920 rows processed
+```
 
 
 ## Question 4. Github Storage Block

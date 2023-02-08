@@ -1,0 +1,54 @@
+###
+### A complete description of a Prefect Deployment for flow 'GCS ETL main flow'
+###
+name: parametrized green taxi data ETL
+description: Main flow that sends inputs to the GCS ETL subflow as parameters
+version: 85a8ffdb396920caaba6c24fe6119ceb
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+tags: []
+parameters: {"taxi_colour": "yellow", "year": 2019, "months": [2, 3]}
+schedule: null
+infra_overrides: {}
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  working_dir: null
+  block_type_slug: process
+  _block_type_slug: process
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: GCS ETL main flow
+manifest_path: null
+storage: null
+path: /Users/waleed/Documents/school/datatalksclub/data-engineering-zoomcamp/week_2_workflow_orchestration/flows/03_deploy
+entrypoint: parametrized_flow.py:etl_main_flow
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties:
+    taxi_colour:
+      title: taxi_colour
+      position: 0
+      type: string
+    year:
+      title: year
+      position: 1
+      type: integer
+    months:
+      title: months
+      position: 2
+      type: array
+      items:
+        type: integer
+  required:
+  - taxi_colour
+  - year
+  - months
+  definitions: null
